@@ -3,9 +3,12 @@ Some example strategies for people who want to create a custom, homemade bot.
 And some handy classes to extend
 """
 
+from __future__ import annotations
+import chess
 from chess.engine import PlayResult
 import random
-from engine_wrapper import EngineWrapper
+from engine_wrapper import MinimalEngine
+from typing import Any
 
 
 class FillerEngine:
@@ -14,6 +17,7 @@ class FillerEngine:
     This is only used to provide the property "self.engine"
     in "MinimalEngine" which extends "EngineWrapper"
     """
+
     def __init__(self, main_engine, name=None):
         self.id = {
             "name": name
@@ -41,6 +45,7 @@ class MinimalEngine(EngineWrapper):
     however you can also change other methods like
     `notify`, `first_search`, `get_time_control`, etc.
     """
+
     def __init__(self, commands, options, stderr, draw_or_resign, name=None, **popen_args):
         super().__init__(options, draw_or_resign)
 
@@ -91,10 +96,12 @@ class Alphabetical(ExampleEngine):
 
 class FirstMove(ExampleEngine):
     """Gets the first move when sorted by uci representation"""
+
     def search(self, board, *args):
         moves = list(board.legal_moves)
         moves.sort(key=str)
         return PlayResult(moves[0], None)
+
 
 class vice11_win32(MinimalEngine):
     def search(self, board, time_limit, ponder, draw_offered, root_moves):
@@ -105,16 +112,8 @@ class vice11_win32(MinimalEngine):
         """
         raise NotImplementedError("The search method is not implemented")
 
-class sunfish(MinimalEngine):
-    def search(self, board, time_limit, ponder, draw_offered, root_moves):
-        return chess.engine.PlayResult()
-        """
-        The method to be implemented in your homemade engine
-        NOTE: This method must return an instance of "chess.engine.PlayResult"
-        """
-        raise NotImplementedError("The search method is not implemented")
 
-class sunfish.py(MinimalEngine):
+class sunfish(MinimalEngine):
     def search(self, board, time_limit, ponder, draw_offered, root_moves):
         return chess.engine.PlayResult()
         """

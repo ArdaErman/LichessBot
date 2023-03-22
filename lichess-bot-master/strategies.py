@@ -31,6 +31,7 @@ class Alphabetical(ExampleEngine):
 
 class FirstMove(ExampleEngine):
     """Gets the first move when sorted by uci representation"""
+
     def search(self, board: chess.Board, *args: Any) -> PlayResult:
         moves = list(board.legal_moves)
         moves.sort(key=str)
